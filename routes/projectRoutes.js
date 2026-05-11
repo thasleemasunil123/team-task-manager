@@ -1,11 +1,27 @@
 const express = require("express");
 const router = express.Router();
+
 const auth = require("../middleware/authMiddleware");
-const { createProject, getProjects } = require("../controllers/projectController");
 const roleCheck = require("../middleware/roleMiddleware");
 
-router.post("/", auth, createProject);
-router.get("/", auth, getProjects);
-router.post("/", auth, roleCheck("admin"), createProject);
+const {
+  createProject,
+  getProjects
+} = require("../controllers/projectController");
+
+// CREATE PROJECT (Admin only)
+router.post(
+  "/",
+  auth,
+  roleCheck("admin"),
+  createProject
+);
+
+// GET PROJECTS
+router.get(
+  "/",
+  auth,
+  getProjects
+);
 
 module.exports = router;

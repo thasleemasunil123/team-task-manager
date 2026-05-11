@@ -14,13 +14,19 @@ app.use("/api/projects", require("./routes/projectRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
 app.use("/api/dashboard", require("./routes/dashboardRoutes"));
 
+console.log("MONGO_URI =", process.env.MONGO_URI);
+
 // MongoDB
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
 })
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
+.then(() => {
+  console.log("MongoDB Connected Successfully");
+})
+.catch(err => {
+  console.error("❌ MongoDB Connection Error:");
+  console.error(err.message);
+});
 
 // Test route
 app.get("/", (req, res) => {

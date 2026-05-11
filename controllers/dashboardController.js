@@ -3,23 +3,19 @@ const Task = require("../models/Task");
 // DASHBOARD STATS
 exports.getDashboard = async (req, res) => {
   try {
-    const totalTasks = await Task.countDocuments({
-      assignedTo: req.user.id
-    });
+
+    const totalTasks = await Task.countDocuments({});
 
     const completed = await Task.countDocuments({
-      assignedTo: req.user.id,
-      status: "completed"
+      status: "Completed"
     });
 
     const pending = await Task.countDocuments({
-      assignedTo: req.user.id,
-      status: "pending"
+      status: "Pending"
     });
 
     const inProgress = await Task.countDocuments({
-      assignedTo: req.user.id,
-      status: "in-progress"
+      status: "In Progress"
     });
 
     res.json({
@@ -28,6 +24,7 @@ exports.getDashboard = async (req, res) => {
       pending,
       inProgress
     });
+
   } catch (err) {
     res.status(500).json(err.message);
   }
